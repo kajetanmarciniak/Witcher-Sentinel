@@ -51,19 +51,20 @@ Security	IAM Role-based Access & Environment Variables
     
 📁 Setup & Usage
 1. Requirements
-Bash
+
+Install the necessary dependencies locally for testing or packaging:
 
 pip install boto3 python-dotenv tavily-python
 
-2. Environment Configuration
+2. The Sentinel requires the following variables to be set within the AWS Lambda Environment Variables (or a local .env file for testing):
 
 Create an AWS Lambda Environment Variable or a local .env file:
-Fragment kodu
 
 SEARCH_API_KEY=your_tavily_key
 AWS_S3_BUCKET=your_witcher_vault
 AWS_SNS_TOPIC_ARN=your_sns_arn
 AWS_REGION=eu-central-1
+
 3. Deployment & Execution (The Hunt) ⚔️
 
     Upload: Upload the lambda_function.py and required dependencies (as a .zip or Layer) to AWS Lambda.
