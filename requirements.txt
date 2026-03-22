@@ -1,0 +1,11 @@
+# --- AWS SDK for Python ---
+# Required for Amazon S3 (Archiving) and Amazon SNS (Alerting)
+boto3>=1.34.0
+
+# --- Intelligence & Search ---
+# Official Tavily AI Python SDK for autonomous web scouting
+tavily-python>=0.3.0
+
+# --- Configuration & Security ---
+# Managing Environment Variables and sensitive API keys
+python-dotenv>=1.0.0
