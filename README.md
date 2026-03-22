@@ -64,15 +64,24 @@ SEARCH_API_KEY=your_tavily_key
 AWS_S3_BUCKET=your_witcher_vault
 AWS_SNS_TOPIC_ARN=your_sns_arn
 AWS_REGION=eu-central-1
+3. Deployment & Execution (The Hunt) ⚔️
 
-3. Deployment
+    Upload: Upload the lambda_function.py and required dependencies (as a .zip or Layer) to AWS Lambda.
 
-    Upload the script to AWS Lambda.
+    Configuration: Set the Timeout to 30s in General Configuration (Critical for deep AI search cycles).
 
-    Set Timeout to 30s (Critical for AI search depth).
+    Manual Execution:
 
-    Add EventBridge Trigger with rate(12 hours).
+        Navigate to the Test tab in the Lambda console.
 
-    Check your S3 Bucket for the daily Bestiary/ reports.
+        Create a new test event (default {} is fine).
+
+        Click Test to awaken the Medallion.
+
+    Verification:
+
+        Check your SNS-linked email for the "Witcher's Ledger" report.
+
+        Navigate to your S3 Bucket to find the archived JSON in the Bestiary/ folder.
 
 Building the future of personal data engineering. Part of the 2026-2027 Development Journey.
