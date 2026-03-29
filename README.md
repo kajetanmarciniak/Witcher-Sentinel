@@ -37,7 +37,7 @@ Security	IAM Role-based Access & Environment Variables
 
     ✅ v1.0 (Foundation): Core AWS Lambda logic & Tavily AI advanced search integration.
 
-    📅 v1.1 (Automation): Event-driven architecture via AWS EventBridge (12h cycles) and SNS email relay.
+    ✅ v1.1 (Automation): Event-driven architecture via AWS EventBridge (12h cycles) and SNS email relay.
 
     📅 v2.0 (The Night City Expansion):
 
