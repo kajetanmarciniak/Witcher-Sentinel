@@ -24,19 +24,27 @@ sns = boto3.client('sns', region_name=REGION)
 # --- THE MISSION CONFIGURATION ---
 TARGET_GAMES = {
     "Witcher_3": {
-        "query": "The Witcher 3 new free rewards DLC updates patches 2026",
+        "queries": [
+            "The Witcher 3 next gen free rewards myrewards 2026",
+            "The Witcher 3 wild hunt new patch update dlc"
+        ],
         "must_have": ["witcher 3", "wild hunt", "w3", "cdpr"],
-        "triggers": ["rewards", "dlc", "patch", "update", "bonus", "myrewards"]
+        "triggers": ["rewards", "dlc", "patch", "update", "bonus", "myrewards"],
+        "noise_filters": ["mod", "nexus", "fanart", "cosplay", "reddit"]
     },
     "Witcher_4": {
-        "query": "The Witcher 4 Project Polaris release date trailer preorder leaks news",
+        "queries": [
+            "The Witcher 4 Project Polaris release date trailer news 2026",
+            "The Witcher 4 hardware requirements pc specs price",
+            "The Witcher 4 preorder editions bonus myrewards"
+        ],
         "must_have": ["witcher 4", "project polaris", "w4", "cdpr"],
-        "triggers": ["preorder", "trailer", "release date", "launch", "leak", "announcement", "rewards", "myrewards", "price"]
+        "triggers": ["preorder", "trailer", "release date", "launch", "leak", "announcement", "price", "hardware", "requirements", "specs", "bonus"],
+        "noise_filters": ["fan cast", "concept trailer", "fanart", "unreal engine 5 showcase", "reddit", "rumor"]
     }
 }
 
 # --- HELPER FUNCTIONS ---
-
 def generate_email_body(alerts):
     header = "🐺 The Witcher’s Ledger ⚔️\n"
     divider = "=" * 45 + "\n"
@@ -76,7 +84,7 @@ def send_sns_notification(alerts):
 # --- THE CORE MISSION ---
 
 def run_sentinel_mission():
-    logging.info("--- 🐺 Witcher Sentinel v1.0: ON THE TRAIL ---")
+    logging.info("--- 🐺 Witcher Sentinel v2.0: ON THE TRAIL ---")
     
     mission_data = {
         "timestamp": datetime.now().isoformat(),
@@ -86,26 +94,36 @@ def run_sentinel_mission():
 
     try:
         for game, config in TARGET_GAMES.items():
-            logging.info(f"[*] Positioning Spyglass On  {game}...")
-            # Advanced search for deeper links
-            search_result = tavily.search(query=config["query"], search_depth="advanced", max_results=6)
-            mission_data["raw_results"][game] = search_result['results']
-
-            for item in search_result['results']:
-                content_lower = (item.get('title', '') + item.get('content', '')).lower()
+            logging.info(f"🔭 Positioning Spyglass On  {game}...")
+            for current_track in config.get("queries", []):
+                logging.info(f"🐾 Tracking scent: {current_track}")
+                search_result = tavily.search(query=current_track, search_depth="advanced", max_results=6, topic="news", days=2)
                 
-                # Context & Trigger
-                if any(name in content_lower for name in config["must_have"]):
-                    for trigger in config["triggers"]:
-                        if trigger in content_lower:
-                            mission_data["alerts"].append({
-                                "game": game,
-                                "type": trigger.upper(),
-                                "title": item['title'],
-                                "url": item.get('url'),
-                                "published": item.get('published_date', 'Unknown')
-                            })
-                            break
+                if game not in mission_data["raw_results"]:
+                    mission_data["raw_results"][game] = []
+                mission_data["raw_results"][game].extend(search_result['results'])
+
+                for item in search_result['results']:
+                    content_lower = (item.get('title', '') + item.get('content', '') + item.get('url', '')).lower()
+                    if any(noise in content_lower for noise in config.get("noise_filters", [])):
+                        logging.info(f"🪞 Illusion detected in '{item['title'][:30]}...'. Skipping.")
+                        continue 
+                    
+                    # Context & Trigger
+                    if any(name in content_lower for name in config["must_have"]):
+                        for trigger in config["triggers"]:
+                            if trigger in content_lower:
+                                raw_date = item.get('published_date')
+                                final_date = raw_date if raw_date else f"LIVE: {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+
+                                mission_data["alerts"].append({
+                                    "game": game,
+                                    "type": trigger.upper(),
+                                    "title": item['title'],
+                                    "url": item.get('url'),
+                                    "published": final_date 
+                                })
+                                break
 
         # Notice
         if mission_data["alerts"]:
