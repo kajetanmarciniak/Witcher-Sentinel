@@ -60,7 +60,7 @@ def generate_email_body(alerts):
 
     footer = "\n🛡️ SYSTEM STATUS: ACTIVE\n"
     footer += "📍 INFRASTRUCTURE: AWS Cloud (eu-central-1)\n"
-    footer += "🤖 GEN: Sentinel-v1\n"
+    footer += "🤖 GEN: Sentinel-v3\n"
     return body + footer
 
 def send_sns_notification(alerts):
@@ -80,12 +80,31 @@ def send_sns_notification(alerts):
         logging.info("🌸 Intelligence Relayed To The Passiflora")
     except Exception as e:
         logging.error(f"❌ SNS Error: {str(e)}")
+        
+# --- THE MEMORY MODULE ---
+def get_vaulted_urls():
+    vaulted_urls = set()
+    logging.info("🧠 Syncing with The Witcher's Memory (S3 Deduplication)...")
+    try:
+        response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix='Bestiary/')
+        if 'Contents' not in response:
+            return vaulted_urls
+        for obj in response['Contents']:
+            if obj['Key'].endswith('.json'):
+                file_obj = s3.get_object(Bucket=BUCKET_NAME, Key=obj['Key'])
+                data = json.loads(file_obj['Body'].read().decode('utf-8'))
+                for alert in data.get('alerts', []):
+                    if 'url' in alert and alert['url']:
+                        vaulted_urls.add(alert['url'])
+        logging.info(f"📚 Bestiary Synced: {len(vaulted_urls)} historical trails loaded.")
+    except Exception as e:
+        logging.error(f"⚠️ S3 Memory Error: {str(e)}.")
+    return vaulted_urls
 
 # --- THE CORE MISSION ---
-
 def run_sentinel_mission():
-    logging.info("--- 🐺 Witcher Sentinel v2.0: ON THE TRAIL ---")
-    
+    logging.info("--- 🐺 Witcher Sentinel v3.0: THE S3 CONJUNCTION ---")
+    vaulted_urls = get_vaulted_urls()
     mission_data = {
         "timestamp": datetime.now().isoformat(),
         "alerts": [],
@@ -104,6 +123,10 @@ def run_sentinel_mission():
                 mission_data["raw_results"][game].extend(search_result['results'])
 
                 for item in search_result['results']:
+                    item_url = item.get('url', '')
+                    if item_url in vaulted_urls:
+                        logging.info("♻️ Deja Vu: Old trail detected. Skipping.")
+                        continue
                     content_lower = (item.get('title', '') + item.get('content', '') + item.get('url', '')).lower()
                     if any(noise in content_lower for noise in config.get("noise_filters", [])):
                         logging.info(f"🪞 Illusion detected in '{item['title'][:30]}...'. Skipping.")
@@ -125,31 +148,29 @@ def run_sentinel_mission():
                                 })
                                 break
 
-        # Notice
+        # Notice & Archive
         if mission_data["alerts"]:
             logging.warning(f"⚔️ Medallion Humming: {len(mission_data['alerts'])} Anomalies Detected!")
             send_sns_notification(mission_data["alerts"])
+            
+            folder = datetime.now().strftime('%Y-%m-%d')
+            filename = f"Contract_Fulfilled_At_{datetime.now().strftime('%H%M')}.json"
+            s3_key = f"Bestiary/{folder}/{filename}"
+
+            s3.put_object(
+                Bucket=BUCKET_NAME,
+                Key=s3_key,
+                Body=json.dumps(mission_data, indent=4, ensure_ascii=False),
+                ContentType='application/json'
+            )
+            logging.info(f"🏛️ Records Secured In The Vivaldi Bank Vault: {s3_key}")
         else:
-            logging.info("🕊️ The Path Is Clear: No Monsters Found.")
-
-        # Archive to S3
-        folder = datetime.now().strftime('%Y-%m-%d')
-        filename = f"Contract_Fulfilled_At_{datetime.now().strftime('%H%M')}.json"
-        s3_key = f"Bestiary/{folder}/{filename}"
-
-        s3.put_object(
-            Bucket=BUCKET_NAME,
-            Key=s3_key,
-            Body=json.dumps(mission_data, indent=4, ensure_ascii=False),
-            ContentType='application/json'
-        )
-        logging.info(f"🏛️ Records Secured In The Vivaldi Bank Vault: {s3_key}")
+            logging.info("🕊️ The Path Is Clear: No Monsters Found. The Vault remains closed.")
 
     except Exception as e:
         logging.error(f"☄️ The Cataclysm: System Failed To Respond: {str(e)}")
 
 # --- THE LAMBDA GATEWAY ---
-
 def lambda_handler(event, context):
     logging.info("--- 🐺 Witcher Sentinel: The Medallion Awakens ---")
     
@@ -174,3 +195,6 @@ def lambda_handler(event, context):
                 'details': str(e)
             })
         }
+        
+if __name__ == "__main__":
+    run_sentinel_mission()
