@@ -2,7 +2,7 @@
 
 **Autonomous Web Scouting for CD Projekt RED Ecosystem | Powered by Tavily AI, AWS Lambda & SNS**
 
-Stop hunting for leaks and updates manually. Witcher Sentinel is a production-grade, event-driven intelligence agent that patrols the web for official DLCs, patches, and Project Polaris (Witcher 4) news. Following the **v3.1 "S3 Conjunction" mutation**, the Sentinel now possesses stateful cloud memory, zero-waste storage logic, and hardened IAM security policies to deliver flawless, zero-spam intelligence reports.
+Stop hunting for leaks and updates manually. Witcher Sentinel is a production-grade, event-driven intelligence agent that patrols the web for official DLCs, patches, and Project Polaris (Witcher 4) news. Following the **v3 "S3 Conjunction" mutation**, the Sentinel now possesses stateful cloud memory, zero-waste storage logic, and hardened IAM security policies to deliver flawless, zero-spam intelligence reports.
 
 ---
 
