@@ -46,7 +46,7 @@ Stop hunting for leaks and updates manually. Witcher Sentinel is a production-gr
 * ✅ **v3.0 (The S3 Conjunction):** Deduplication memory module via `boto3` `list_objects_v2`, Zero-Waste storage optimization, and Least Privilege IAM policies.
 * 📅 **v4.0 (The Medallion's Resonance - Rich Webhooks):** Transitioning from plain SNS emails to Discord/Telegram Webhook integrations, providing rich HTML/Markdown embeds with direct image links and categorized alert channels.
 * 📅 **v5.0 (The Hunter's Mesh - Secure Architecture):** Implementation of a VPN mesh network layer to securely manage the cloud infrastructure and access S3 data lakes directly from the local development environment, eliminating any need for vulnerable port forwarding.
-
+* 📅 **v6.0 (The Elder Blood - Predictive Synthesis):** Integration of a cognitive LLM layer to autonomously read, summarize, and score the authenticity of intercepted leaks, transforming the agent into an intelligent analyst and eliminating the need to manually verify false positives.
 ---
 
 ### 📁 Setup & Usage
