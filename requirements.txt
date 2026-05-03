@@ -1,13 +1,17 @@
 # --- AWS SDK for Python ---
-# Note: Provided natively by AWS Lambda runtime, but required for local development
-boto3>=1.34.0
+# Natively provided by Lambda, but essential for local testing and IDE autocompletion
+boto3>=1.35.0
 
 # --- Intelligence & Search ---
-# Official Tavily AI Python SDK for autonomous web scouting
-tavily-python>=0.3.1
-# Ensures compatibility between Tavily and Boto3 in Lambda environments
+# Core scouting engine for tracking Witcher-related anomalies
+tavily-python>=0.5.0
+
+# --- Networking & API Communication ---
+# Required for relaying intelligence to Discord Passiflora
+requests>=2.32.0
+# Critical: Maintains compatibility between Tavily/Boto3 and the Lambda runtime
 urllib3<2.0.0
 
 # --- Configuration & Security ---
-# Managing Environment Variables and sensitive API keys
+# Loading .env files and securing API keys for the AI Watcher
 python-dotenv>=1.0.1
