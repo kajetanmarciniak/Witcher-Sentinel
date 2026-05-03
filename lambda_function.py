@@ -2,6 +2,7 @@ import os
 import json
 import boto3
 import logging
+import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from tavily import TavilyClient
@@ -13,73 +14,94 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Credentials
 TAVILY_KEY = os.getenv('SEARCH_API_KEY')
 BUCKET_NAME = os.getenv('AWS_S3_BUCKET')
-SNS_ARN = os.getenv('AWS_SNS_TOPIC_ARN')
 REGION = os.getenv('AWS_REGION', 'eu-central-1')
+DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
 
 # Clients
 tavily = TavilyClient(api_key=TAVILY_KEY)
 s3 = boto3.client('s3', region_name=REGION)
-sns = boto3.client('sns', region_name=REGION)
+
+# Colors
+COLOR_MINT = 0x00FF96   
+COLOR_IGNI = 0xFF9900
 
 # --- THE MISSION CONFIGURATION ---
 TARGET_GAMES = {
     "Witcher_3": {
         "queries": [
-            "The Witcher 3 next gen free rewards myrewards 2026",
-            "The Witcher 3 wild hunt new patch update dlc"
+            "The Witcher 3 wild hunt new patch update dlc 2026",
+            "The Witcher 3 free rewards claim digital goodies 2026",
+            "The Witcher 3 seasonal event bonus items"
         ],
-        "must_have": ["witcher 3", "wild hunt", "w3", "cdpr"],
-        "triggers": ["rewards", "dlc", "patch", "update", "bonus", "myrewards"],
-        "noise_filters": ["mod", "nexus", "fanart", "cosplay", "reddit"]
+        "must_have": ["witcher 3", "wild hunt", "w3", "cdpr", "next-gen"],
+        "triggers": ["rewards", "dlc", "patch", "update", "bonus", "myrewards", "giveaway", "freebie", "hotfix", "claim", "redeem"],
+        "noise_filters": ["mod", "nexus", "fanart", "cosplay", "reddit", "guide", "walkthrough", "build", "tutorial", "how to"]
     },
     "Witcher_4": {
         "queries": [
             "The Witcher 4 Project Polaris release date trailer news 2026",
-            "The Witcher 4 hardware requirements pc specs price",
-            "The Witcher 4 preorder editions bonus myrewards"
+            "The Witcher 4 CD Projekt Red investor report 2026",
+            "Witcher Polaris production phase status update",
+            "The Witcher 4 official announcement leak 2026"
         ],
-        "must_have": ["witcher 4", "project polaris", "w4", "cdpr"],
-        "triggers": ["preorder", "trailer", "release date", "launch", "leak", "announcement", "price", "hardware", "requirements", "specs", "bonus"],
-        "noise_filters": ["fan cast", "concept trailer", "fanart", "unreal engine 5 showcase", "reddit", "rumor"]
+        "must_have": ["witcher 4", "project polaris", "w4", "cdpr", "cd projekt"],
+        "triggers": [
+            "preorder", "trailer", "release date", "launch", "leak", "announcement", 
+            "price", "hardware", "requirements", "specs", "bonus", "investor", 
+            "financial", "shareholder", "casting", "teaser", "confirmed"
+        ],
+        "noise_filters": [
+            "fan cast", "concept trailer", "fanart", "unreal engine 5 showcase", 
+            "reddit", "rumor", "everything we know", "ai generated", "theory", "clickbait"
+        ]
+    },
+    "Witcher_Remake_Sirius": {
+        "queries": [
+            "Witcher 1 Remake Canis Majoris news 2026",
+            "Witcher Sirius project multiplayer update",
+            "The Molasses Flood Witcher project news"
+        ],
+        "must_have": ["remake", "sirius", "canis majoris", "molasses flood", "witcher"],
+        "triggers": ["unreal engine 5", "gameplay", "hiring", "delay", "reveal", "announcement", "teaser", "status"],
+        "noise_filters": ["mod", "original", "2007", "fanart", "cosplay", "reddit"]
     }
 }
 
-# --- HELPER FUNCTIONS ---
-def generate_email_body(alerts):
-    header = "🐺 The Witcher’s Ledger ⚔️\n"
-    divider = "=" * 45 + "\n"
-    body = header + divider + f"Scent Picked Up {len(alerts)} Essential Mutagens Found At {datetime.now().strftime('%H:%M')}\n\n"
-
-    for i, a in enumerate(alerts, 1):
-        body += f"{i}. 🎯 TARGET: {a['game'].replace('_', ' ')}\n"
-        body += f"   🚩 TYPE: {a['type']}\n"
-        body += f"   📰 TITLE: {a['title']}\n"
-        body += f"   📅 DATE: {a['published']}\n"
-        body += f"   🔗 LINK: {a['url']}\n"
-        body += "-" * 20 + "\n"
-
-    footer = "\n🛡️ SYSTEM STATUS: ACTIVE\n"
-    footer += "📍 INFRASTRUCTURE: AWS Cloud (eu-central-1)\n"
-    footer += "🤖 GEN: Sentinel-v3\n"
-    return body + footer
-
-def send_sns_notification(alerts):
-    """Sends the report to your email."""
+# --- THE COMMUNICATOR ---
+def send_discord_notification(alerts):
+    """Sends rich markdown embeds to Discord via Webhook."""
+    logging.info(f"🚀 Attempting to send {len(alerts)} alerts to Discord...")
     if not alerts:
+        logging.info("ℹ️ No alerts to send (Empty List).")
         return
-    
+    embeds = []
+    for alert in alerts[:10]: 
+        color = COLOR_IGNI if alert['type'] in ["LEAK", "TRAILER", "PREORDER"] else COLOR_MINT
+        embeds.append({
+            "title": f"🎯 {alert['game'].replace('_', ' ')}: {alert['type']}",
+            "description": f"**[{alert['title']}]({alert['url']})**", 
+            "color": color,
+            "fields": [
+                {"name": "📅 Published", "value": alert['published'], "inline": True},
+                {"name": "🔗 Origin", "value": "Tavily Deep Search", "inline": True}
+            ],
+            "footer": {
+                "text": "🐺 Sentinel v4.0 | The Medallion's Resonance",
+            }
+        })
+
+    payload = {
+        "username": "Witcher Sentinel",
+        "content": f"⚔️ **Medallion Humming:** {len(alerts)} Essential Mutagens Found!",
+        "embeds": embeds
+    }
+
     try:
-        subject = f"🐺 Witcher Alert: {len(alerts)} The Medallion Trembles: Items Detected"
-        message = generate_email_body(alerts)
-        
-        sns.publish(
-            TopicArn=SNS_ARN,
-            Subject=subject,
-            Message=message
-        )
-        logging.info("🌸 Intelligence Relayed To The Passiflora")
+        response = requests.post(DISCORD_WEBHOOK_URL, json=payload)
+        response.raise_for_status()
+        logging.info("🌸 Intelligence Relayed To Discord Passiflora")
     except Exception as e:
-        logging.error(f"❌ SNS Error: {str(e)}")
+        logging.error(f"❌ Webhook Error: {str(e)}")
         
 # --- THE MEMORY MODULE ---
 def get_vaulted_urls():
@@ -103,17 +125,17 @@ def get_vaulted_urls():
 
 # --- THE CORE MISSION ---
 def run_sentinel_mission():
-    logging.info("--- 🐺 Witcher Sentinel v3.0: THE S3 CONJUNCTION ---")
+    logging.info("--- 🐺 Witcher Sentinel v4.0: The Medallion's Resonance ---")
     vaulted_urls = get_vaulted_urls()
     mission_data = {
         "timestamp": datetime.now().isoformat(),
         "alerts": [],
         "raw_results": {}
     }
-
+    
     try:
         for game, config in TARGET_GAMES.items():
-            logging.info(f"🔭 Positioning Spyglass On  {game}...")
+            logging.info(f"🔭 Positioning Spyglass On {game}...")
             for current_track in config.get("queries", []):
                 logging.info(f"🐾 Tracking scent: {current_track}")
                 search_result = tavily.search(query=current_track, search_depth="advanced", max_results=6, topic="news", days=2)
@@ -151,7 +173,7 @@ def run_sentinel_mission():
         # Notice & Archive
         if mission_data["alerts"]:
             logging.warning(f"⚔️ Medallion Humming: {len(mission_data['alerts'])} Anomalies Detected!")
-            send_sns_notification(mission_data["alerts"])
+            send_discord_notification(mission_data["alerts"])
             
             folder = datetime.now().strftime('%Y-%m-%d')
             filename = f"Contract_Fulfilled_At_{datetime.now().strftime('%H%M')}.json"
@@ -172,7 +194,7 @@ def run_sentinel_mission():
 
 # --- THE LAMBDA GATEWAY ---
 def lambda_handler(event, context):
-    logging.info("--- 🐺 Witcher Sentinel: The Medallion Awakens ---")
+    logging.info("--- 🐺 Witcher Sentinel v4.0: The Medallion Awakens ---")
     
     try:
         # Startup
@@ -181,7 +203,7 @@ def lambda_handler(event, context):
         return {
             'statusCode': 200,
             'body': json.dumps({
-                'message': '⚔️ Hunt Succesful: Intelligence Gathered and Vaulted.',
+                'message': '⚔️ Hunt Successful: Intelligence Gathered and Vaulted.',
                 'timestamp': datetime.now().isoformat()
             })
         }
