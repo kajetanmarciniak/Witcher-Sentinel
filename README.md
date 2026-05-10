@@ -41,14 +41,41 @@ Witcher Sentinel is a production-grade, serverless intelligence agent designed t
 ### 🚀 Roadmap
 
 ✅ v1.0 (The Foundation - Serverless Genesis): Core AWS Lambda event-driven logic, fundamental SNS/S3 integration, and initial deployment of the Tavily AI search heuristic engine.
+
+---
+
 ✅ v2.0 (The Trial of the Grasses - Signal Extraction): Advanced multi-query tracking, URL-level cryptographic noise reduction, Date-Wall bypass protocols, and concurrent 48-hour sliding window implementation. Pure Witcher telemetry focus.
+
+---
+
 ✅ v3.0 (The S3 Conjunction - Ephemeral State Memory): Deduplication memory module via `boto3 list_objects_v2`, Zero-Waste lifecycle storage optimization, and strict adherence to Least Privilege IAM architectures.
+
+---
+
 ✅ v4.0 (The Medallion's Resonance - Event-Driven Telemetry): Transitioning from legacy SNS protocols to asynchronous Discord/Telegram Webhook integrations. Delivering rich HTML/Markdown payloads with direct media embedding and segmented incident-response channels.
+
+---
+
 📅 v5.0 (The Hunter's Mesh - Zero-Trust Architecture): Deployment of a cryptographically routed VPN mesh topology. Enabling secure, seamless VPC-to-Local tunneling for S3 data lake management, strictly deprecating any vulnerable port-forwarding vectors.
+
+---
+
 📅 v6.0 (The Elder Blood - Cognitive Intelligence): Integration of a Retrieval-Augmented Generation (RAG) pipeline. Deploying a local/API-driven LLM to autonomously ingest, synthesize, and heuristically score the authenticity of intercepted leaks, achieving zero-shot validation.
+
+---
+
 📅 v7.0 (The White Frost - Immutable Infrastructure): Complete migration to declarative Infrastructure as Code (IaC) via Terraform. Ensuring deterministic state recreation and ephemeral environment provisioning, allowing the entire Sentinel stack to be nuked and redeployed in minutes.
+
+---
+
 📅 v8.0 (The Black Sun - Active Cyber Defense): Implementation of AWS CloudWatch, GuardDuty telemetry streams, and real-time security logging. Automated incident triggers for unauthorized IAM calls or anomalous S3 access patterns, establishing a self-defending data perimeter.
+
+---
+
 📅 v9.0 (The Law of Surprise - Geo-Resilient Redundancy): Deployment of an Active-Passive Global Data Controller. Engineering cross-region S3 replication (CRR) and automated disaster recovery (DR) failover mechanisms to guarantee resilience during massive AWS regional outages.
+
+---
+
 📅 v10.0 (The Witcher’s Legacy - Apex Autonomous Core): Final architectural decoupling into a headless microservice API. Integration of a custom observability dashboard and self-healing orchestration scripts, securing a 99.99% SLA for the critical 2027-2028 deployment window.
 
 ---
