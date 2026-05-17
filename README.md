@@ -1,4 +1,4 @@
-# 🐺 Witcher Sentinel v4: The Medallion's Resonance
+# 🐺 Witcher Sentinel v5: The Hunter's Mesh
 
 **Autonomous OSINT Intelligence Agent | AWS Lambda, Tavily AI & Discord Integration**
 
@@ -6,13 +6,13 @@ Witcher Sentinel is a production-grade, serverless intelligence agent designed t
 
 ---
 
-### 🛠️ Key Features (Upgraded in v4)
+### 🛠️ Key Features (Upgraded in v5)
 
-* 🧠 **Stateful Memory (S3 Deduplication):** Syncs with historical S3 JSON archives (`O(1)` Set lookup) before every hunt. This prevents duplicate alerts and ensures that once a "monster" is caught, it never triggers the medallion again.
+* 🧠 **Stateful Memory (S3 Deduplication):** Syncs with a centralized master index file (`O(1)` Set lookup) before every hunt. This prevents duplicate alerts and ensures that once a "monster" is caught, it never triggers the medallion again.
 * 🛰️ **Passiflora Webhooks (Discord Integration):** Replaces legacy SNS emails with rich Markdown embeds. Alerts are color-coded (e.g., **IGNI Orange** for leaks/preorders) and include direct links, timestamps, and origin metadata.
 * ♻️ **Zero-Waste Architecture:** "The path remains clear if no monsters are found." S3 storage and Discord triggers are only activated when genuine, filtered intelligence is gathered. Zero clutter, optimized cloud costs.
 * 🛡️ **Hardened Cloud Security:** Operates under a strict **Least Privilege IAM Policy**. Environment variables (`.env`) secure all API keys, ensuring no sensitive data is ever exposed in the codebase.
-* 👁️ **Multi-Track Scouting:** Simultaneously tracks multiple Witcher projects (Wild Hunt updates, Polaris/Witcher 4, Canis Majoris/Remake, and Project Sirius) using parallel AI search queries.
+* 👁️ **Multi-Track Scouting:** Simultaneously tracks multiple Witcher projects (Wild Hunt updates, Polaris/Witcher 4, and Project Sirius) using parallel AI search queries.
 * ⚔️ **The Silver Sword (Noise Reduction):** Advanced Python logic filters out "illusions" such as fanart, mods, NexusMods, SEO-bait guides ("everything we know"), and Reddit rumors.
 
 ---
@@ -56,7 +56,7 @@ Witcher Sentinel is a production-grade, serverless intelligence agent designed t
 
 ---
 
-📅 v5.0 (The Hunter's Mesh - Zero-Trust Evolution): Deployment of a high-speed indexed memory architecture for S3 Data Lake management. Securing intelligence flow via IAM-bound contracts and private gateway endpoints, strictly deprecating linear search patterns and vulnerable access vectors. Establishing a non-persistent, invisible hunting perimeter.
+✅ v5.0 (The Hunter's Mesh - Zero-Trust Evolution): Deployment of a high-speed indexed memory architecture for S3 Data Lake management. Securing intelligence flow via IAM-bound contracts and private gateway endpoints, strictly deprecating linear search patterns and vulnerable access vectors. Establishing a non-persistent, invisible hunting perimeter.
 
 ---
 
