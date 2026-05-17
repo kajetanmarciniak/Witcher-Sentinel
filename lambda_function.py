@@ -20,9 +20,10 @@ DISCORD_WEBHOOK_URL = os.getenv('DISCORD_WEBHOOK_URL')
 # Clients
 tavily = TavilyClient(api_key=TAVILY_KEY)
 s3 = boto3.client('s3', region_name=REGION)
+INDEX_KEY = 'Bestiary/index.json'
 
 # Colors
-COLOR_MINT = 0x00FF96   
+COLOR_MINT = 0x00FF96
 COLOR_IGNI = 0xFF9900
 
 # --- THE MISSION CONFIGURATION ---
@@ -86,7 +87,7 @@ def send_discord_notification(alerts):
                 {"name": "🔗 Origin", "value": "Tavily Deep Search", "inline": True}
             ],
             "footer": {
-                "text": "🐺 Sentinel v4.0 | The Medallion's Resonance",
+                "text": "🐺 Sentinel v5.0 | The Hunter's Mesh",
             }
         })
 
@@ -105,28 +106,38 @@ def send_discord_notification(alerts):
         
 # --- THE MEMORY MODULE ---
 def get_vaulted_urls():
-    vaulted_urls = set()
-    logging.info("🧠 Syncing with The Witcher's Memory (S3 Deduplication)...")
+    logging.info("🧠 Accessing Master Bestiary Index...")
     try:
-        response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix='Bestiary/')
-        if 'Contents' not in response:
-            return vaulted_urls
-        for obj in response['Contents']:
-            if obj['Key'].endswith('.json'):
-                file_obj = s3.get_object(Bucket=BUCKET_NAME, Key=obj['Key'])
-                data = json.loads(file_obj['Body'].read().decode('utf-8'))
-                for alert in data.get('alerts', []):
-                    if 'url' in alert and alert['url']:
-                        vaulted_urls.add(alert['url'])
-        logging.info(f"📚 Bestiary Synced: {len(vaulted_urls)} historical trails loaded.")
+        file_obj = s3.get_object(Bucket=BUCKET_NAME, Key=INDEX_KEY)
+        return set(json.loads(file_obj['Body'].read().decode('utf-8')).get("urls", []))
+    except s3.exceptions.NoSuchKey:
+        logging.info("ℹ️ Master Index not found. Initiating new memory core.")
+        return set()
     except Exception as e:
-        logging.error(f"⚠️ S3 Memory Error: {str(e)}.")
-    return vaulted_urls
+        logging.error(f"🔮 Telepathic interference: Illusion blocked S3 Index access: {str(e)}")
+        return set()
+
+def update_master_index(new_urls, current_vault):
+    try:
+        s3.put_object(
+            Bucket=BUCKET_NAME,
+            Key=INDEX_KEY,
+            Body=json.dumps({
+                "urls": list(current_vault.union(new_urls)),
+                "updated_at": datetime.now().isoformat(),
+                "version": "5.0"
+            }, indent=4),
+            ContentType='application/json'
+        )
+        logging.info("🏛️ Chronicles synchronized. Master Index secured.")
+    except Exception as e:
+        logging.error(f"🔥 Archives on fire: Failed to save Master Index: {str(e)}")
 
 # --- THE CORE MISSION ---
 def run_sentinel_mission():
-    logging.info("--- 🐺 Witcher Sentinel v4.0: The Medallion's Resonance ---")
+    logging.info("--- 🐺 Witcher Sentinel v5.0: The Hunter's Mesh Awakens ---")
     vaulted_urls = get_vaulted_urls()
+    new_discovered_urls = set()
     mission_data = {
         "timestamp": datetime.now().isoformat(),
         "alerts": [],
@@ -147,7 +158,7 @@ def run_sentinel_mission():
                 for item in search_result['results']:
                     item_url = item.get('url', '')
                     if item_url in vaulted_urls:
-                        logging.info("♻️ Deja Vu: Old trail detected. Skipping.")
+                        logging.info(f"♻️ Trail already tracked in The Bestiary: {item_url}. Skipping.")
                         continue
                     content_lower = (item.get('title', '') + item.get('content', '') + item.get('url', '')).lower()
                     if any(noise in content_lower for noise in config.get("noise_filters", [])):
@@ -165,9 +176,10 @@ def run_sentinel_mission():
                                     "game": game,
                                     "type": trigger.upper(),
                                     "title": item['title'],
-                                    "url": item.get('url'),
+                                    "url": item_url,
                                     "published": final_date 
                                 })
+                                new_discovered_urls.add(item_url)
                                 break
 
         # Notice & Archive
@@ -186,6 +198,7 @@ def run_sentinel_mission():
                 ContentType='application/json'
             )
             logging.info(f"🏛️ Records Secured In The Vivaldi Bank Vault: {s3_key}")
+            update_master_index(new_discovered_urls, vaulted_urls)
         else:
             logging.info("🕊️ The Path Is Clear: No Monsters Found. The Vault remains closed.")
 
@@ -194,7 +207,7 @@ def run_sentinel_mission():
 
 # --- THE LAMBDA GATEWAY ---
 def lambda_handler(event, context):
-    logging.info("--- 🐺 Witcher Sentinel v4.0: The Medallion Awakens ---")
+    logging.info("--- 🐺 Witcher Sentinel v5.0: The Medallion Awakens ---")
     
     try:
         # Startup
@@ -209,7 +222,7 @@ def lambda_handler(event, context):
         }
     except Exception as e:
         # Error Logs
-        logging.error(f"❄️ The White Frost, All Processes Frozen: {str(e)}")
+        logging.error(f"❄️ The White Frost, All Systems Frozen: {str(e)}")
         return {
             'statusCode': 500,
             'body': json.dumps({
