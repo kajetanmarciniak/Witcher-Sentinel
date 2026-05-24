@@ -1,6 +1,6 @@
-# --- AWS SDK for Python ---
-# Natively provided by Lambda, but essential for local testing and IDE autocompletion
-boto3>=1.35.0
+# ==============================================================================
+# Witcher Sentinel v5.0 | Production Dependencies
+# ==============================================================================
 
 # --- Intelligence & Search ---
 # Core scouting engine for tracking Witcher-related anomalies
@@ -9,6 +9,7 @@ tavily-python>=0.5.0
 # --- Networking & API Communication ---
 # Required for relaying intelligence to Discord Passiflora
 requests>=2.32.0
+
 # Critical: Maintains compatibility between Tavily/Boto3 and the Lambda runtime
 urllib3<2.0.0
 
