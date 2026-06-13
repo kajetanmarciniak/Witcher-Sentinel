@@ -97,4 +97,4 @@ python main.py
 
 **Lambda:** Handler `lambda_function.lambda_handler` | Timeout **60–90s** | IAM Role (no access keys in zip).
 
-See [README.md](../README.md) for full deploy and security notes.
+See [README.md](../README.md) for quick start.

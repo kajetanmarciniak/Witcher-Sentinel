@@ -13,7 +13,6 @@ search_results_cache/
 aws_config/
 
 # Serverless / Lambda Deployment Artifacts
-# Chroni przed pushowaniem ogromnych paczek .zip z bibliotekami do repo
 dist/*.zip
 lambda_function.zip
 *.bundle.js
@@ -22,7 +21,6 @@ lambda_function.zip
 .aws/
 .sam/
 aws-lambda-rie
-# Logi debugowania Boto3, które mogą zawierać metadane Twojego konta
 boto3.log
 botocore.log
 
@@ -48,7 +46,6 @@ lib64/
 MANIFEST
 
 # Environments
-# Blokuje lokalne wirtualne środowiska (zgodnie z v4.0 Roadmap)
 .venv/
 env/
 venv/
@@ -71,7 +68,6 @@ DESIGN.md.txt
 # ==========================================
 # 🏛️ SENTINEL DATA PRESERVATION
 # ==========================================
-# Ignorujemy lokalne kopie Bestariusza - mają być tylko w S3 (Vivaldi Bank)
 local_bestiary/
 temp_alerts/
 logs/sentinel.log
