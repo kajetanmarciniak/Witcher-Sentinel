@@ -47,18 +47,43 @@ lambda_function.py    → AWS handler alias
 
 ## Roadmap
 
-| Version | Codename | Status |
-| :--- | :--- | :--- |
-| v1.0 | The Foundation | Done |
-| v2.0 | The Trial of the Grasses | Done |
-| v3.0 | The S3 Conjunction | Done |
-| v4.0 | The Medallion's Resonance | Done |
-| v5.0 | The Hunter's Mesh | Done |
-| v6.0 | The Elder Blood | **Done** |
-| v7.0 | The White Frost (Terraform IaC) | Planned |
-| v8.0 | The Black Sun (GuardDuty / CloudWatch) | Planned |
-| v9.0 | The Law of Surprise (CRR / DR) | Planned |
-| v10.0 | The Witcher's Legacy (Microservice API) | Planned |
+✅ **v1.0 — The Foundation (Serverless Genesis):** Core AWS Lambda event-driven logic, fundamental SNS/S3 integration, and initial deployment of the Tavily search heuristic engine.
+
+---
+
+✅ **v2.0 — The Trial of the Grasses (Signal Extraction):** Advanced multi-query tracking, URL-level noise reduction, Date-Wall bypass protocols, and concurrent 48-hour sliding window implementation. Pure Witcher telemetry focus.
+
+---
+
+✅ **v3.0 — The S3 Conjunction (Ephemeral State Memory):** Deduplication memory module via `boto3 list_objects_v2`, Zero-Waste lifecycle storage optimization, and strict adherence to Least Privilege IAM architectures.
+
+---
+
+✅ **v4.0 — The Medallion's Resonance (Event-Driven Telemetry):** Transition from legacy SNS protocols to asynchronous Discord Webhook integrations. Rich Markdown payloads with direct links, timestamps, and origin metadata.
+
+---
+
+✅ **v5.0 — The Hunter's Mesh (Zero-Trust Evolution):** High-speed indexed memory architecture for S3 Data Lake management. Intelligence flow secured via IAM-bound contracts, deprecating linear search patterns and vulnerable access vectors.
+
+---
+
+✅ **v6.0 — The Elder Blood (Cognitive Intelligence):** Modular async architecture with RAG pipeline and API-driven authenticity scoring. Parallel hunt tracks, S3-backed knowledge corpus, and heuristic fallback — signals validated before any Discord alert fires.
+
+---
+
+📅 **v7.0 — The White Frost (Immutable Infrastructure):** Complete migration to declarative Infrastructure as Code (IaC) via Terraform. Deterministic state recreation and ephemeral environment provisioning — entire Sentinel stack redeployable in minutes.
+
+---
+
+📅 **v8.0 — The Black Sun (Active Cyber Defense):** AWS CloudWatch, GuardDuty telemetry streams, and real-time security logging. Automated incident triggers for unauthorized IAM calls or anomalous S3 access patterns.
+
+---
+
+📅 **v9.0 — The Law of Surprise (Geo-Resilient Redundancy):** Active-Passive Global Data Controller with cross-region S3 replication (CRR) and automated disaster recovery failover for AWS regional outages.
+
+---
+
+📅 **v10.0 — The Witcher's Legacy (Apex Autonomous Core):** Final decoupling into a headless microservice API. Custom observability dashboard and self-healing orchestration scripts, targeting 99.99% SLA for the 2027–2028 deployment window.
 
 ---
 

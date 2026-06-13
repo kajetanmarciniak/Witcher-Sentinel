@@ -6,7 +6,7 @@
 
 Autonomous OSINT agent for CD Projekt Red titles. Serverless on **AWS Lambda** with Tavily search, **S3 state**, **Discord** alerts, and async **authenticity scoring** (RAG + cognitive filter).
 
-> Architecture and roadmap: [`docs/DESIGN.md`](docs/DESIGN.md)
+> Architecture and full roadmap: [`docs/DESIGN.md`](docs/DESIGN.md)
 
 ---
 
