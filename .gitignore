@@ -1,0 +1,81 @@
+# ==========================================
+# 🐺 WITCHER SENTINEL & AWS SECURITY (TOP PRIORITY)
+# ==========================================
+.env
+.env.*
+!.env.example
+.envrc
+credentials.json
+*.pem
+secret.py
+search_results_cache/
+*.json_tmp
+aws_config/
+
+# Serverless / Lambda Deployment Artifacts
+# Chroni przed pushowaniem ogromnych paczek .zip z bibliotekami do repo
+dist/*.zip
+lambda_function.zip
+*.bundle.js
+
+# AWS & Boto3 Specific
+.aws/
+.sam/
+aws-lambda-rie
+# Logi debugowania Boto3, które mogą zawierać metadane Twojego konta
+boto3.log
+botocore.log
+
+# ==========================================
+# PYTHON STANDARD & TOOLING
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / Packaging
+.Python
+build/
+develop-eggs/
+dist/
+.eggs/
+lib/
+lib64/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Environments
+# Blokuje lokalne wirtualne środowiska (zgodnie z v4.0 Roadmap)
+.venv/
+env/
+venv/
+ENV/
+.env.bak/
+venv.bak/
+
+# Legacy typo filenames
+cursorrules.txt
+DESIGN.md.txt
+.cursorrules
+.cursorignore
+
+# IDE Settings (PyCharm, VS Code)
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ==========================================
+# 🏛️ SENTINEL DATA PRESERVATION
+# ==========================================
+# Ignorujemy lokalne kopie Bestariusza - mają być tylko w S3 (Vivaldi Bank)
+local_bestiary/
+temp_alerts/
+logs/sentinel.log
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
