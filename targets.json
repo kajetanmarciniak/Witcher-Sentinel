@@ -1,0 +1,75 @@
+{
+  "trusted_domains": [
+    "cdprojekt.com",
+    "witcher.com",
+    "press.cdprojektred.com",
+    "investor.cdprojekt.com",
+    "store.steampowered.com",
+    "gog.com",
+    "ign.com",
+    "gamespot.com",
+    "eurogamer.net",
+    "pcgamer.com",
+    "theverge.com",
+    "polygon.com",
+    "rockpapershotgun.com"
+  ],
+  "heuristic": {
+    "boost_terms": ["official", "confirmed", "announcement", "trailer"],
+    "low_confidence_triggers": ["leak", "rumor"]
+  },
+  "default_knowledge": [
+    {
+      "title": "CDPR Official Press",
+      "url": "https://press.cdprojektred.com",
+      "summary": "Primary source for Witcher 4 / Polaris official announcements.",
+      "tags": ["official", "cdpr", "polaris"]
+    },
+    {
+      "title": "CDPR Investor Relations",
+      "url": "https://investor.cdprojekt.com",
+      "summary": "Financial reports and production milestones for Project Polaris.",
+      "tags": ["official", "investor", "cdpr"]
+    }
+  ],
+  "games": {
+    "Witcher_3": {
+      "queries": [
+        "The Witcher 3 wild hunt new patch update dlc 2026",
+        "The Witcher 3 free rewards claim digital goodies 2026",
+        "The Witcher 3 seasonal event bonus items"
+      ],
+      "must_have": ["witcher 3", "wild hunt", "w3", "cdpr", "next-gen"],
+      "triggers": ["rewards", "dlc", "patch", "update", "bonus", "myrewards", "giveaway", "freebie", "hotfix", "claim", "redeem"],
+      "noise_filters": ["mod", "nexus", "fanart", "cosplay", "reddit", "guide", "walkthrough", "build", "tutorial", "how to"]
+    },
+    "Witcher_4": {
+      "queries": [
+        "The Witcher 4 Project Polaris release date trailer news 2026",
+        "The Witcher 4 CD Projekt Red investor report 2026",
+        "Witcher Polaris production phase status update",
+        "The Witcher 4 official announcement leak 2026"
+      ],
+      "must_have": ["witcher 4", "project polaris", "w4", "cdpr", "cd projekt"],
+      "triggers": [
+        "preorder", "trailer", "release date", "launch", "leak", "announcement",
+        "price", "hardware", "requirements", "specs", "bonus", "investor",
+        "financial", "shareholder", "casting", "teaser", "confirmed"
+      ],
+      "noise_filters": [
+        "fan cast", "concept trailer", "fanart", "unreal engine 5 showcase",
+        "reddit", "rumor", "everything we know", "ai generated", "theory", "clickbait"
+      ]
+    },
+    "Witcher_Remake_Sirius": {
+      "queries": [
+        "Witcher 1 Remake Canis Majoris news 2026",
+        "Witcher Sirius project multiplayer update",
+        "The Molasses Flood Witcher project news"
+      ],
+      "must_have": ["remake", "sirius", "canis majoris", "molasses flood", "witcher"],
+      "triggers": ["unreal engine 5", "gameplay", "hiring", "delay", "reveal", "announcement", "teaser", "status"],
+      "noise_filters": ["mod", "original", "2007", "fanart", "cosplay", "reddit"]
+    }
+  }
+}
